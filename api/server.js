@@ -11,7 +11,8 @@ mongoose.connect("mongodb://localhost:27017/milestone2thejj", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })  //CALLBACK FUNCTION TO CONNECT TO DATABASE//
-    .then(() => console.log("Connect to Datbase"))
+    .then(() => console.log("You have connected to the database!"))
     .catch(console.error);
 
+const
 app.listen(3001, () => console.log(("Server opened on port 3001")));
