@@ -21,5 +21,9 @@ app.get('/todos', async (req, res)) ; {
 
     res.json(todos);
 }
+//NEW TODO TASK FUNCTION//
+app.get('/todo/new', (req, res) => {
+    const todo = 
+});
 
 app.listen(3001, () => console.log(("Server opened on port 3001!")));
