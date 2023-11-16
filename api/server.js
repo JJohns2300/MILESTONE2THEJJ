@@ -14,5 +14,12 @@ mongoose.connect("mongodb://localhost:27017/milestone2thejj", {
     .then(() => console.log("You have connected to the database!"))
     .catch(console.error);
 
-const
-app.listen(3001, () => console.log(("Server opened on port 3001")));
+const Todo = require('./models/todo');
+//RETRIEVES TO-DO FROM PORT//
+app.get('/todos', async (req, res)) ; {
+    const todos = await Todo.find();
+
+    res.json(todos);
+}
+
+app.listen(3001, () => console.log(("Server opened on port 3001!")));
