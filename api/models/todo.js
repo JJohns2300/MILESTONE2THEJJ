@@ -10,8 +10,13 @@ const TodoSchema = new Schema({
         type: Boolean, 
         default: false
     },
+    //STORE TIME ON NEW TO-DO//
     timestamp: {
         type: String, 
         default: Date.now()
     }
 })
+
+const Todo = mongoose.model("Todo", TodoSchema);
+
+module.exports = Todo;
