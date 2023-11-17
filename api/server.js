@@ -22,8 +22,14 @@ app.get('/todos', async (req, res)) ; {
     res.json(todos);
 }
 //NEW TODO TASK FUNCTION//
-app.get('/todo/new', (req, res) => {
-    const todo = 
+app.post('/todo/new', (req, res) => {
+    const todo = new Todo({
+        Text: req.body.Text
+    });
+//SAVE A T0-DO or TASK//
+    todo.save();
+
+    res.json(todo);
 });
 
 app.listen(3001, () => console.log(("Server opened on port 3001!")));
