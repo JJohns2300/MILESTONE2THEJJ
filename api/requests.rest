@@ -1,0 +1,14 @@
+GET http://localhost:27017/todos
+
+###
+
+POST http://localhost:27017/todo/new 
+Content-Type: application/json 
+
+{
+    "text": "FINISH PROJECT!"
+}
+
+###
+
+DELETE http://localhost:27017/todo/DELETE
