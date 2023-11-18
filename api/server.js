@@ -2,34 +2,71 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const app = express ('');
+const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb://localhost:27017/milestone2thejj", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})  //CALLBACK FUNCTION TO CONNECT TO DATABASE//
-    .then(() => console.log("You have connected to the database!"))
-    .catch(console.error);
+// CONNECTS TO DATABASE//
+mongoose.connect("mongodb://127.0.0.1:27017/mern-todo", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log("Connected to the database!"))
+  .catch(error => console.error("Error connecting to the database:", error));
 
 const Todo = require('./models/todo');
-//RETRIEVES TO-DO FROM PORT//
-app.get('/todos', async (req, res)) ; {
+
+// RETRIEVE TO-DO/TASK//
+app.get('/todos', async (req, res) => {
+  try {
     const todos = await Todo.find();
-
     res.json(todos);
-}
-//NEW TODO TASK FUNCTION//
-app.post('/todo/new', (req, res) => {
-    const todo = new Todo({
-        Text: req.body.Text
-    });
-//SAVE A T0-DO or TASK//
-    todo.save();
-
-    res.json(todo);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-app.listen(3001, () => console.log(("Server opened on port 3001!")));
+// CREATE A NEW TODO//
+app.post('/todo/new', async (req, res) => {
+  try {
+    const todo = new Todo({
+      Text: req.body.text
+    });
+    await todo.save();
+    res.json(todo);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// FUNCTION ALLOWS US TO DELETE TODOS//
+app.delete('/todo/delete/:id', async (req, res) => {
+  try {
+    const result = await Todo.findByIdAndDelete(req.params.id);
+    if (!result) {
+      return res.status(404).json({ error: "Todo not found" });
+    }
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// CHECKBOX FOR COMPLETED TASKS//
+app.put('/todo/complete/:id', async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id);
+    if (!todo) {
+      return res.status(404).json({ error: "Todo not found" });
+    }
+    todo.complete = !todo.complete;
+    await todo.save();
+    res.json(todo);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+const PORT = 3001;
+app.listen(PORT, () => console.log(`Server opened on port ${PORT}!`));
